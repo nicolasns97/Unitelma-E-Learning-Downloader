@@ -26,7 +26,7 @@ This tool is designed to improve the learning experience by providing uninterrup
 
     ```bash
     python -m venv venv
-    source venv/Scripts/activate  # On Linux: venv\bin\activate
+    venv/Scripts/activate  # On Linux: source venv\bin\activate
     ```
 
 4. **Install the dependencies**:
