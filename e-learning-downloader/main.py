@@ -38,6 +38,14 @@ def get_lessons(session, course_url):
     return lessons
 
 
+def get_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--skip-optional-recordings', action='store_true', help='ignores optional recordings')
+    parser.add_argument('--skip-attachments', action='store_true', help='ignores attachments')
+    args = parser.parse_args()
+    return args.skip_optional_recordings, args.skip_attachments
+
+
 def main():
     skip_optional_recordings, skip_attachments = get_arguments()
 
@@ -70,14 +78,6 @@ def main():
     selected_lessons = inquirer.prompt(prompt_lessons)['choices']
     download_lessons(session, selected_course, {k: v for k, v in lessons.items() if k in selected_lessons}, skip_optional_recordings, skip_attachments)
     print(f"\nRecordings saved at {os.path.join(os.getcwd(), selected_course)}\n")
-
-
-def get_arguments():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--skip-optional-recordings', action='store_true', help='ignores optional recordings')
-    parser.add_argument('--skip-attachments', action='store_true', help='ignores attachments')
-    args = parser.parse_args()
-    return args.skip_optional_recordings, args.skip_attachments
 
 
 if __name__ == "__main__":
