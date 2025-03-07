@@ -20,8 +20,8 @@ This tool is designed to improve the learning experience by providing uninterrup
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/username/project-name.git
-   cd project-name
+   git clone https://github.com/nicolasns97/Unitelma-E-Learning-Downloader.git
+   cd Unitelma-E-Learning-Downloader
    ```
 
 2. **(Optional) Create and activate a virtual environment**:
