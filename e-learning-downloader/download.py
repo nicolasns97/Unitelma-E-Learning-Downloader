@@ -5,19 +5,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-import configparser
+from config import config
 
-def get_config_downloads():
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    folder = config.get('downloads', 'folder')
-    return folder
-
-download_folder = get_config_downloads()
-
-def download_lessons(session, course_name, lessons, skip_optional_recordings, skip_attachments):
-    print('Download will start briefly...\n')
-    #os.makedirs(course_name, exist_ok=True)
+def download_lessons(session, course_name, lessons):
     tqdm_bars = []
     lesson_name_max_length = max(len(k) for k in lessons)
     with ThreadPoolExecutor() as executor:
@@ -28,9 +18,7 @@ def download_lessons(session, course_name, lessons, skip_optional_recordings, sk
                             k,
                             lessons[k],
                             pos,
-                            lesson_name_max_length,
-                            skip_optional_recordings,
-                            skip_attachments
+                            lesson_name_max_length
             )
             for pos, k in enumerate(lessons)
         ]
@@ -39,12 +27,11 @@ def download_lessons(session, course_name, lessons, skip_optional_recordings, sk
     flush_tqdm_bars(tqdm_bars)
 
 
-def download_lesson(session, course_name, lesson_name, lesson_url, tqdm_position, lesson_name_max_length, skip_optional_recordings, skip_attachments):
-    
+def download_lesson(session, course_name, lesson_name, lesson_url, tqdm_position, lesson_name_max_length):
     ks = get_kaltura_session(session, lesson_url)
     main_recording_url = get_main_recording_url(session, lesson_url)
-    attachments_url = get_attachments_url(session, ks, lesson_url, skip_attachments)
-    sources_url = get_optional_recordings_url(session, ks, lesson_url, skip_optional_recordings)
+    attachments_url = get_attachments_url(session, ks, lesson_url)
+    sources_url = get_optional_recordings_url(session, ks, lesson_url)
 
     tqdm_total_length = get_resources_total_length(attachments_url, main_recording_url, session, sources_url)
 
@@ -90,7 +77,7 @@ def download_main_recording(bar, course_name, lesson_name, main_recording_url, s
 
 
 def save_file(session, bar, url, course_name, lesson_name, filename):
-    folder_path = os.path.join(clean_name(download_folder), clean_name(course_name), clean_name(lesson_name))
+    folder_path = os.path.join(clean_name(config['downloads']['folder']), clean_name(course_name), clean_name(lesson_name))
     os.makedirs(folder_path, exist_ok=True)
     file_path = os.path.join(folder_path, clean_name(filename))
     
@@ -113,8 +100,8 @@ def get_tqdm(position, total, lesson_name, longest_desc):
                 unit_divisor=1024)
 
 
-def get_attachments_url(session, ks, lesson_url, skip_attachments):
-    if not skip_attachments:
+def get_attachments_url(session, ks, lesson_url):
+    if not config['args']['skip_attachments']:
         url = 'https://kmc.l2l.cineca.it/api_v3/index.php'
         entry_id = get_entry_id(session, lesson_url)
         params = {
@@ -160,8 +147,8 @@ def get_attachment_url(session, ks, attachment_id):
     return response.text.replace('\\', '').replace('"', '')
 
 
-def get_optional_recordings_url(session, ks, lesson_url, skip_optional_recordings):
-    if not skip_optional_recordings:
+def get_optional_recordings_url(session, ks, lesson_url):
+    if not config['args']['skip_optional_recordings']:
         entry_id = get_entry_id(session, lesson_url)
         url = 'https://kmc.l2l.cineca.it/api_v3/index.php'
         params = {
