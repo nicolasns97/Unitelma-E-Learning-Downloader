@@ -1,15 +1,16 @@
 ## Project Description
 
-This utility allows users to download videos and attachments from courses on the Unitelma e-learning platform by logging in with their credentials. By downloading the videos, users can watch them offline, which is particularly useful when the platform experiences slowdowns. Additionally, having the videos stored locally allows users to open them with external media players, like VLC, which offer the ability to adjust the playback speed.
+This utility allows students to download videos and attachments from courses on the Unitelma e-learning platform by logging in with their credentials. By downloading the videos, students can watch them offline, which is particularly useful when the platform experiences slowdowns. Additionally, having the videos stored locally allows students to open them with external media players, like VLC, which offer the ability to adjust the playback speed.
 
-This tool is designed to improve the learning experience by providing uninterrupted access to course materials, especially in situations where the platform might be slow or experiencing issues. It ensures users can always access the content, regardless of online availability, and enjoy more control over how they consume the material.
+This tool is designed to improve the learning experience by providing uninterrupted access to course materials, especially in situations where the platform might be slow or experiencing issues. It ensures students can always access the content, regardless of online availability, and enjoy more control over how they consume the material.
 
 
 ## Requirements
 
 - **Python version**: 3.6 or higher
 - You can check your Python version by running:
-    ```bash
+
+   ```bash
     python --version
     ```
   
@@ -22,16 +23,19 @@ This tool is designed to improve the learning experience by providing uninterrup
     ```
 
 2. **(Optional) Create and activate a virtual environment**:
+
     ```bash
     python -m venv venv
     source venv/Scripts/activate  # On Linux: venv\bin\activate
     ```
 
-3. **Install the dependencies**:
+4. **Install the dependencies**:
+
     ```bash
     pip install -r requirements.txt
     ```
-4. **Configure your credentials**:  
+6. **Configure your credentials**:  
+
    Inside the project folder, there is a file named `config.ini`. You need to modify this file and insert your Unitelma platform credentials.  
    
    Example of what `config.ini` should look like:
@@ -40,8 +44,9 @@ This tool is designed to improve the learning experience by providing uninterrup
    username = your_username
    password = your_password
    
-5. **Run the program from the root directory** (make sure you are in the main project folder):
-    ```bash
+8. **Run the program from the root directory** (make sure you are in the main project folder):
+
+   ```bash
     python e-learning-downloader/main.py
     ```
 
@@ -67,4 +72,5 @@ This tool is designed to improve the learning experience by providing uninterrup
      ```
 
 ### Notes:
+
 - Make sure to run the program from the root directory as running it from any other directory may cause path or import errors.
