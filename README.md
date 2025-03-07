@@ -4,6 +4,7 @@ This utility allows students to download videos and attachments from courses on 
 
 This tool is designed to improve the learning experience by providing uninterrupted access to course materials, especially in situations where the platform might be slow or experiencing issues. It ensures students can always access the content, regardless of online availability, and enjoy more control over how they consume the material.
 
+![Preview](./assets/preview.gif)
 
 ## Requirements
 
