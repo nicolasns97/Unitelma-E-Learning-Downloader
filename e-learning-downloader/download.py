@@ -5,6 +5,15 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
 from tqdm import tqdm
+import configparser
+
+def get_config_downloads():
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    folder = config.get('downloads', 'folder')
+    return folder
+
+download_folder = get_config_downloads()
 
 def download_lessons(session, course_name, lessons, skip_optional_recordings, skip_attachments):
     print('Download will start briefly...\n')
@@ -31,8 +40,7 @@ def download_lessons(session, course_name, lessons, skip_optional_recordings, sk
 
 
 def download_lesson(session, course_name, lesson_name, lesson_url, tqdm_position, lesson_name_max_length, skip_optional_recordings, skip_attachments):
-    os.makedirs(os.path.join(course_name, lesson_name), exist_ok=True)
-
+    
     ks = get_kaltura_session(session, lesson_url)
     main_recording_url = get_main_recording_url(session, lesson_url)
     attachments_url = get_attachments_url(session, ks, lesson_url, skip_attachments)
@@ -69,22 +77,24 @@ def get_resources_total_length(attachments_url, main_recording_url, session, sou
 
 def download_attachments(attachments_url, bar, course_name, lesson_name, session):
     for attachment in attachments_url:
-        save_file(session, bar, attachment['url'], os.path.join(course_name, lesson_name, attachment['filename']))
+        save_file(session, bar, attachment['url'], course_name, lesson_name, attachment['filename'])
 
 
 def download_optional_recordings(bar, course_name, lesson_name, session, sources_url):
     for idx, source in enumerate(sources_url):
-        screen_recording_path = os.path.join(course_name, lesson_name, f'{lesson_name}-source-{idx + 1}.mp4')
-        save_file(session, bar, source, screen_recording_path)
+        save_file(session, bar, source, course_name, lesson_name, f'{lesson_name}-source-{idx + 1}.mp4')
 
 
 def download_main_recording(bar, course_name, lesson_name, main_recording_url, session):
-    main_recording_path = os.path.join(course_name, lesson_name, f'{lesson_name}.mp4')
-    save_file(session, bar, main_recording_url, main_recording_path)
+    save_file(session, bar, main_recording_url, course_name, lesson_name, f'{lesson_name}.mp4')
 
 
-def save_file(session, bar, url, path):
-    with open(path, 'wb') as file:
+def save_file(session, bar, url, course_name, lesson_name, filename):
+    folder_path = os.path.join(clean_name(download_folder), clean_name(course_name), clean_name(lesson_name))
+    os.makedirs(folder_path, exist_ok=True)
+    file_path = os.path.join(folder_path, clean_name(filename))
+    
+    with open(file_path, 'wb') as file:
         stream = session.get(url, stream=True)
         for chunk in stream.iter_content(chunk_size=1024):
             file.write(chunk)
@@ -226,3 +236,10 @@ def get_kaltura_session(session, lesson_url):
                 flashvars_json = match.group(1)
                 break
     return json.loads(flashvars_json)['ks']
+
+def clean_name(name):
+    name = name.replace(',', '-')  # Replace ',' with '-'
+    name = name.replace(':', '-')  # Replace ':' with '-'
+    name = re.sub(r'[\/\\*?"<>|]', '', name)  # Remove invalid characters
+    return name
+

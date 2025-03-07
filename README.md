@@ -11,62 +11,71 @@ This tool is designed to improve the learning experience by providing uninterrup
 - **Python version**: 3.6 or higher
 - You can check your Python version by running:
 
-   ```bash
-    python --version
-    ```
-  
+  ```bash
+   python --version
+  ```
+
 ## How to run the project
 
 1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/username/project-name.git
-    cd project-name
-    ```
+
+   ```bash
+   git clone https://github.com/username/project-name.git
+   cd project-name
+   ```
 
 2. **(Optional) Create and activate a virtual environment**:
 
-    ```bash
-    python -m venv venv
-    venv/Scripts/activate  # On Linux: source venv\bin\activate
-    ```
+   ```bash
+   python -m venv venv
+   venv/Scripts/activate  # On Linux: source venv\bin\activate
+   ```
 
-4. **Install the dependencies**:
+3. **Install the dependencies**:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
-6. **Configure your credentials**:  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure your credentials**:
 
    Inside the project folder, there is a file named `config.example.ini`. You need to:
 
    - Rename `config.example.ini` to `config.ini`.
-   - Open `config.ini` and **replace** the placeholder values with your actual Unitelma platform credentials.
+   - Open `config.ini` and **replace** the placeholder values with your actual Unitelma platform credentials. If you want you can also change the default main downloads folder
 
-    Example of what `config.ini` should look like:
-    
-    ```ini
-    [credentials]
-    username = your_actual_username
-    password = your_actual_password
-   
-8. **Run the program from the root directory** (make sure you are in the main project folder):
+   Example of what `config.ini` should look like:
+
+   ```ini
+   [credentials]
+   username = your_actual_username
+   password = your_actual_password
+
+   [downloads]
+   folder = main_downloads_folder
+
+   ```
+
+5. **Run the program from the root directory** (make sure you are in the main project folder):
 
    ```bash
     python e-learning-downloader/main.py
-    ```
+   ```
 
    **Optional parameters**:
-   
+
    - `--skip-optional-recordings`: Skips any optional recordings during the process such as Interactive Multimedia Whiteboard (IWB) recordings.
-   
+
      Example usage:
+
      ```bash
      python e-learning-downloader/main.py --skip-optional-recordings
      ```
 
    - `--skip-attachments`: Skips processing of any attachments. Use this if you do not want to download attachment files during the scraping process.
-   
+
      Example usage:
+
      ```bash
      python e-learning-downloader/main.py --skip-attachments
      ```
