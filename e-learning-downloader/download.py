@@ -17,7 +17,7 @@ download_folder = get_config_downloads()
 
 def download_lessons(session, course_name, lessons, skip_optional_recordings, skip_attachments):
     print('Download will start briefly...\n')
-    os.makedirs(course_name, exist_ok=True)
+    #os.makedirs(course_name, exist_ok=True)
     tqdm_bars = []
     lesson_name_max_length = max(len(k) for k in lessons)
     with ThreadPoolExecutor() as executor:
