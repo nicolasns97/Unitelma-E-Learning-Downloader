@@ -36,13 +36,17 @@ This tool is designed to improve the learning experience by providing uninterrup
     ```
 6. **Configure your credentials**:  
 
-   Inside the project folder, there is a file named `config.ini`. You need to modify this file and insert your Unitelma platform credentials.  
-   
-   Example of what `config.ini` should look like:
-   ```ini
-   [credentials]
-   username = your_username
-   password = your_password
+   Inside the project folder, there is a file named `config.example.ini`. You need to:
+
+   1. Rename `config.example.ini` to `config.ini`.
+   2. Open `config.ini` and **replace** the placeholder values with your actual Unitelma platform credentials.
+
+    Example of what `config.ini` should look like:
+    
+    ```ini
+    [credentials]
+    username = your_actual_username
+    password = your_actual_password
    
 8. **Run the program from the root directory** (make sure you are in the main project folder):
 
