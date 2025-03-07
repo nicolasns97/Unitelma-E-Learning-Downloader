@@ -38,8 +38,8 @@ This tool is designed to improve the learning experience by providing uninterrup
 
    Inside the project folder, there is a file named `config.example.ini`. You need to:
 
-   1. Rename `config.example.ini` to `config.ini`.
-   2. Open `config.ini` and **replace** the placeholder values with your actual Unitelma platform credentials.
+   - Rename `config.example.ini` to `config.ini`.
+   - Open `config.ini` and **replace** the placeholder values with your actual Unitelma platform credentials.
 
     Example of what `config.ini` should look like:
     
