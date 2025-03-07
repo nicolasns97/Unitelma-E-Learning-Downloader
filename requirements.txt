@@ -1,0 +1,4 @@
+beautifulsoup4==4.13.3
+inquirer==3.4.0
+Requests==2.32.3
+tqdm==4.67.1
