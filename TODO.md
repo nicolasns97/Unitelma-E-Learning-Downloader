@@ -20,4 +20,4 @@ This file tracks the tasks and progress for the project. Below you can find the 
 - [x] Refactor
 - [x] Ignore non relevant pages
 - [x] Skip optional recordings
-- [x] Specify output folder
+- [x] Specify output folder (#1)
