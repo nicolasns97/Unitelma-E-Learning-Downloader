@@ -15,7 +15,6 @@ This file tracks the tasks and progress for the project. Below you can find the 
 
 ### Done ✓
 
-- [x] Create my first TODO.md 
 - [x] Download attachments
 - [x] Download all video sources
 - [x] Refactor
