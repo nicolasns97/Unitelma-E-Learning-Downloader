@@ -68,7 +68,7 @@ def main():
     selected_lessons = inquirer.prompt(prompt_lessons)['choices']
     print('Download will start briefly...\n')
     download_lessons(session, selected_course, {k: v for k, v in lessons.items() if k in selected_lessons})
-    print(f"\nRecordings saved at {os.path.join(os.getcwd(), clean_name(config['downloads']['folder']), selected_course)}\n")
+    print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(selected_course))}\n")
 
 
 if __name__ == "__main__":

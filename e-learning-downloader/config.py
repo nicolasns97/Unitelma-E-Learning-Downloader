@@ -1,5 +1,6 @@
 import argparse
 import configparser
+import os
 
 CONFIG_FILE_PATH = 'config.ini'
 config = {
@@ -17,7 +18,11 @@ def load_config():
     config['credentials']['password'] = cp.get('credentials', 'password')
 
     # DOWNLOADS
-    config['downloads']['folder'] = cp.get('downloads', 'folder', fallback='Downloads')
+    folder = cp.get('downloads', 'folder', fallback='Downloads')
+    if os.path.isabs(folder):
+        config['downloads']['folder'] = folder
+    else:
+        config['downloads']['folder'] = os.path.abspath(folder)
 
     # ARGUMENTS
     args = load_arguments()

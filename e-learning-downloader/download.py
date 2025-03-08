@@ -77,7 +77,7 @@ def download_main_recording(bar, course_name, lesson_name, main_recording_url, s
 
 
 def save_file(session, bar, url, course_name, lesson_name, filename):
-    folder_path = os.path.join(clean_name(config['downloads']['folder']), clean_name(course_name), clean_name(lesson_name))
+    folder_path = os.path.join(config['downloads']['folder'], clean_name(course_name), clean_name(lesson_name))
     os.makedirs(folder_path, exist_ok=True)
     file_path = os.path.join(folder_path, clean_name(filename))
     
