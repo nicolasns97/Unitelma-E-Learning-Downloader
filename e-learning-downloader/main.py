@@ -66,7 +66,7 @@ def main():
         )
     ]
     selected_lessons = inquirer.prompt(prompt_lessons)['choices']
-    print('Download will start briefly...\n')
+    print('Download will start shortly...\n')
     download_lessons(session, selected_course, {k: v for k, v in lessons.items() if k in selected_lessons})
     print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(selected_course))}\n")
 
