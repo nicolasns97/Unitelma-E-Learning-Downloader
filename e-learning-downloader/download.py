@@ -227,6 +227,7 @@ def get_kaltura_session(session, lesson_url):
 def clean_name(name):
     name = name.replace(',', '-')  # Replace ',' with '-'
     name = name.replace(':', '-')  # Replace ':' with '-'
-    name = re.sub(r'[\/\\*?"<>|]', '', name)  # Remove invalid characters
+    name = name.replace('/', '-')  # Replace ':' with '-'
+    name = re.sub(r'[\/\\*?"<>|]', ' ', name)  # Remove invalid characters
     return name
 
