@@ -1,4 +1,4 @@
-## Project Description
+## Description
 
 This utility allows students to download videos and attachments from courses on the Unitelma e-learning platform by logging in with their credentials. By downloading the videos, students can watch them offline, which is particularly useful when the platform experiences slowdowns. Additionally, having the videos stored locally allows students to open them with external media players, like VLC, which offer the ability to adjust the playback speed.
 
@@ -76,6 +76,11 @@ This tool is designed to improve the learning experience by providing uninterrup
      python e-learning-downloader/main.py --skip-optional-recordings --skip-attachments
      ```
 
-### Notes:
+    ### Notes:
 
-- Make sure to run the program from the root directory as running it from any other directory may cause path or import errors.
+    - Make sure to run the program from the root directory as running it from any other directory may cause path or import errors.
+
+## Links
+
+- [TODO List](TODO.md) - Track ongoing and completed tasks in the project.
+
