@@ -1,1 +1,1 @@
-SKIPPABLE_COURSES = ['Area Studenti e Tutor di Corso', 'Presentazione']
+SKIPPABLE_COURSES = ['Area Studenti e Tutor di Corso', 'Presentazione', 'Presentazione e Info']

@@ -1,14 +1,12 @@
 import os
 import threading
+import inquirer
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-from auth import login, get_config_credentials
-import inquirer
-import argparse
-
-
+from auth import login
+from config import config
 from constants import SKIPPABLE_COURSES
-from download import download_lessons
+from download import download_lessons, clean_name
 
 
 def get_courses(session):
@@ -38,20 +36,12 @@ def get_lessons(session, course_url):
     return lessons
 
 
-def get_arguments():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--skip-optional-recordings', action='store_true', help='ignores optional recordings')
-    parser.add_argument('--skip-attachments', action='store_true', help='ignores attachments')
-    args = parser.parse_args()
-    return args.skip_optional_recordings, args.skip_attachments
-
 
 def main():
-    skip_optional_recordings, skip_attachments = get_arguments()
-
     tqdm.set_lock(threading.Lock())
 
-    password, username = get_config_credentials()
+    username = config['credentials']['username']
+    password = config['credentials']['password']
 
     print("Logging in...\n")
     session = login(username, password)
@@ -76,8 +66,9 @@ def main():
         )
     ]
     selected_lessons = inquirer.prompt(prompt_lessons)['choices']
-    download_lessons(session, selected_course, {k: v for k, v in lessons.items() if k in selected_lessons}, skip_optional_recordings, skip_attachments)
-    print(f"\nRecordings saved at {os.path.join(os.getcwd(), selected_course)}\n")
+    print('Download will start shortly...\n')
+    download_lessons(session, selected_course, {k: v for k, v in lessons.items() if k in selected_lessons})
+    print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(selected_course))}\n")
 
 
 if __name__ == "__main__":

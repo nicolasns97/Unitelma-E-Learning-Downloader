@@ -54,11 +54,3 @@ def _get_SAML_post_data(url: str, response: Response) -> dict:
         'RelayState': query_params.get('RelayState', [None])[0],
         'SAMLResponse': saml_response_value
     }
-
-
-def get_config_credentials():
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    username = config.get('credentials', 'username')
-    password = config.get('credentials', 'password')
-    return password, username
