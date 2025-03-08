@@ -20,4 +20,4 @@ This file tracks the tasks and progress for the project. Below you can find the 
 - [x] Refactor
 - [x] Ignore non relevant pages
 - [x] Skip optional recordings
-- [x] Specify output folder (#1)
+- [x] Specify output folder https://github.com/nicolasns97/Unitelma-E-Learning-Downloader/pull/1
