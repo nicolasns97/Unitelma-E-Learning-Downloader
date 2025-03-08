@@ -15,7 +15,7 @@ def download_lessons(session, course_name, lessons):
             executor.submit(download_lesson,
                             session,
                             course_name,
-                            f"{pos+1}. {k}",
+                            k,
                             lessons[k],
                             pos,
                             lesson_name_max_length

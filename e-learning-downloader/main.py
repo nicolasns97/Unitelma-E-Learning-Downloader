@@ -36,6 +36,13 @@ def get_lessons(session, course_url):
     return lessons
 
 
+def prepend_index_to_lessons(lessons: dict) -> dict:
+    return {f'{i+1}. {key}': lessons[key] for i, key in enumerate(lessons)}
+
+
+def filter_lessons(lessons: dict, selected_lessons: list) -> dict:
+    return {key: value for key, value in lessons.items() if key in selected_lessons}
+
 
 def main():
     tqdm.set_lock(threading.Lock())
@@ -67,7 +74,7 @@ def main():
     ]
     selected_lessons = inquirer.prompt(prompt_lessons)['choices']
     print('Download will start shortly...\n')
-    download_lessons(session, selected_course, {k: v for k, v in lessons.items() if k in selected_lessons})
+    download_lessons(session, selected_course, prepend_index_to_lessons(filter_lessons(lessons, selected_lessons)))
     print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(selected_course))}\n")
 
 
