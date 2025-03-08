@@ -8,6 +8,7 @@ This file tracks the tasks and progress for the project. Below you can find the 
 - [ ] Select all lessons
 - [ ] Back to main menu
 - [ ] Error handling & Logging
+- [ ] Secure credentials with something like https://pypi.org/project/keyring/
 
 ### In Progress
 
