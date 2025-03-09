@@ -58,7 +58,7 @@ def main():
     prompt_courses = [
         inquirer.List(
             'choice',
-            message='Select a course',
+            message='Select a course (Press ↑/↓ to navigate, ENTER to confirm)',
             choices=courses.keys()
         )
     ]
@@ -68,11 +68,15 @@ def main():
     prompt_lessons = [
         inquirer.Checkbox(
             'choices',
-            message='Select one or more recordings',
+            message='Select one or more lessons (Press ↑/↓ to navigate, ←/→ to select/deselect, ENTER to confirm)',
             choices=lessons.keys()
         )
     ]
-    selected_lessons = inquirer.prompt(prompt_lessons)['choices']
+    while True :
+        selected_lessons = inquirer.prompt(prompt_lessons)['choices']
+        if selected_lessons :
+            break
+        print('You didn\'t choose any lesson, Try again\n')
     print('Download will start shortly...\n')
     download_lessons(session, selected_course, prepend_index_to_lessons(filter_lessons(lessons, selected_lessons)))
     print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(selected_course))}\n")
