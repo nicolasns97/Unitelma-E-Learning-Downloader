@@ -8,11 +8,13 @@ from config import config
 from constants import SKIPPABLE_COURSES
 from download import download_lessons, clean_name
 
+
 class Prompt_outputs:
     def __init__(self, selected_course, lessons, selected_lessons):
         self.selected_course = selected_course
         self.lessons = lessons
         self.selected_lessons = selected_lessons
+
 
 def get_courses(session):
     response = session.get(url='https://elearning.unitelma.it')
@@ -26,6 +28,7 @@ def get_courses(session):
         if title not in SKIPPABLE_COURSES:
             courses[title] = href
     return courses
+
 
 def get_lessons(session, course_url):
     response = session.get(course_url)
@@ -47,6 +50,7 @@ def prepend_index_to_lessons(lessons: dict) -> dict:
 
 def filter_lessons(lessons: dict, selected_lessons: list) -> dict:
     return {key: value for key, value in lessons.items() if key in selected_lessons}
+
 
 def handle_lessons_prompt(prompt_lessons, lessons):
     while True :
