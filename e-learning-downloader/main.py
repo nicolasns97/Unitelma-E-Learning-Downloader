@@ -9,6 +9,13 @@ from constants import SKIPPABLE_COURSES
 from download import download_lessons, clean_name
 
 
+class Prompt_outputs:
+    def __init__(self, selected_course, lessons, selected_lessons):
+        self.selected_course = selected_course
+        self.lessons = lessons
+        self.selected_lessons = selected_lessons
+
+
 def get_courses(session):
     response = session.get(url='https://elearning.unitelma.it')
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -21,6 +28,7 @@ def get_courses(session):
         if title not in SKIPPABLE_COURSES:
             courses[title] = href
     return courses
+
 
 def get_lessons(session, course_url):
     response = session.get(course_url)
@@ -44,6 +52,55 @@ def filter_lessons(lessons: dict, selected_lessons: list) -> dict:
     return {key: value for key, value in lessons.items() if key in selected_lessons}
 
 
+def handle_lessons_prompt(prompt_lessons, lessons):
+    while True :
+        selected_lessons = inquirer.prompt(prompt_lessons)['choices']
+
+        if "🔙 Return to Main Menu" in selected_lessons:
+            if len(selected_lessons) == 1:
+                print("\n🔙 Returning to Main Menu...\n")
+                break
+            else:
+                print("\n⚠️ You cannot select lessons and return at the same time. Please choose one option!\n")
+        elif "✅ Download All Lessons" in selected_lessons:
+            selected_lessons = lessons
+            print(f"\n✅ All lessons will be downloaded: {', '.join(selected_lessons)}\n")
+            break
+        else:
+            if selected_lessons:
+                print(f"\n✅ You selected: {', '.join(selected_lessons)}\n")
+                break
+            else:
+                print("\n⚠️ You must select at least one lesson. Try again!\n")
+    return selected_lessons
+
+
+def prompt_loop(session, courses):
+    prompt_courses = [
+        inquirer.List(
+            'choice',
+            message='Select a course (Press ↑/↓ to navigate, ENTER to confirm)',
+            choices=courses.keys()
+        )
+    ]
+    while True:
+        selected_course = inquirer.prompt(prompt_courses)['choice']
+        print(f"Retrieving lessons from {selected_course}...\n")
+        lessons = get_lessons(session, courses[selected_course])
+        special_options = ["✅ Download All Lessons", "🔙 Return to Main Menu"]
+        choices = special_options + list(lessons.keys())
+        prompt_lessons = [
+            inquirer.Checkbox(
+                'choices',
+                message='Select one or more lessons (Press ↑/↓ to navigate, SPACE to select/deselect, ENTER to confirm)',
+                choices= choices
+            )
+        ]
+        selected_lessons = handle_lessons_prompt(prompt_lessons, lessons)
+        if selected_lessons != ["🔙 Return to Main Menu"]:
+            return Prompt_outputs(selected_course, lessons, selected_lessons)
+
+
 def main():
     tqdm.set_lock(threading.Lock())
 
@@ -55,31 +112,11 @@ def main():
 
     print("Retrieving courses...\n")
     courses = get_courses(session)
-    prompt_courses = [
-        inquirer.List(
-            'choice',
-            message='Select a course (Press ↑/↓ to navigate, ENTER to confirm)',
-            choices=courses.keys()
-        )
-    ]
-    selected_course = inquirer.prompt(prompt_courses)['choice']
-    print(f"Retrieving lessons from {selected_course}...\n")
-    lessons = get_lessons(session, courses[selected_course])
-    prompt_lessons = [
-        inquirer.Checkbox(
-            'choices',
-            message='Select one or more lessons (Press ↑/↓ to navigate, ←/→ to select/deselect, ENTER to confirm)',
-            choices=lessons.keys()
-        )
-    ]
-    while True :
-        selected_lessons = inquirer.prompt(prompt_lessons)['choices']
-        if selected_lessons :
-            break
-        print('You didn\'t choose any lesson, Try again\n')
+
+    prompt_result = prompt_loop(session, courses)
     print('Download will start shortly...\n')
-    download_lessons(session, selected_course, prepend_index_to_lessons(filter_lessons(lessons, selected_lessons)))
-    print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(selected_course))}\n")
+    download_lessons(session, prompt_result.selected_course, prepend_index_to_lessons(filter_lessons(prompt_result.lessons, prompt_result.selected_lessons)))
+    print(f"\nRecordings saved at {os.path.join(config['downloads']['folder'], clean_name(prompt_result.selected_course))}\n")
 
 
 if __name__ == "__main__":
