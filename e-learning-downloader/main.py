@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 from auth import login
 from config import config
-from constants import SKIPPABLE_COURSES
+from constants import SKIPPABLE_COURSES, RETURN_TO_MAIN_MENU, DOWNLOAD_ALL_LESSONS
 from download import download_lessons, clean_name
 
 
@@ -56,13 +56,13 @@ def handle_lessons_prompt(prompt_lessons, lessons):
     while True :
         selected_lessons = inquirer.prompt(prompt_lessons)['choices']
 
-        if "🔙 Return to Main Menu" in selected_lessons:
+        if RETURN_TO_MAIN_MENU in selected_lessons:
             if len(selected_lessons) == 1:
                 print("\n🔙 Returning to Main Menu...\n")
                 break
             else:
                 print("\n⚠️ You cannot select lessons and return at the same time. Please choose one option!\n")
-        elif "✅ Download All Lessons" in selected_lessons:
+        elif DOWNLOAD_ALL_LESSONS in selected_lessons:
             selected_lessons = lessons
             print(f"\n✅ All lessons will be downloaded: {', '.join(selected_lessons)}\n")
             break
@@ -87,7 +87,7 @@ def prompt_loop(session, courses):
         selected_course = inquirer.prompt(prompt_courses)['choice']
         print(f"Retrieving lessons from {selected_course}...\n")
         lessons = get_lessons(session, courses[selected_course])
-        special_options = ["✅ Download All Lessons", "🔙 Return to Main Menu"]
+        special_options = [DOWNLOAD_ALL_LESSONS, RETURN_TO_MAIN_MENU]
         choices = special_options + list(lessons.keys())
         prompt_lessons = [
             inquirer.Checkbox(
@@ -97,7 +97,7 @@ def prompt_loop(session, courses):
             )
         ]
         selected_lessons = handle_lessons_prompt(prompt_lessons, lessons)
-        if selected_lessons != ["🔙 Return to Main Menu"]:
+        if selected_lessons != [RETURN_TO_MAIN_MENU]:
             return Prompt_outputs(selected_course, lessons, selected_lessons)
 
 
